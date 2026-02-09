@@ -145,18 +145,18 @@
             const mockAskIgorResponse = `Pros and Cons of Catechin Treatment for Periodontal Disease in Dogs and Cats
 
 Pros:
-• Catechin isolated from Japanese green tea significantly inhibits the growth of periodontal pathogens Porphyromonas gulae and Porphyromonas gingivalis in vitro in a dose-dependent manner. It also significantly suppresses hydrogen sulfide and methyl mercaptan production, which are major contributors to halitosis, even after short exposure. [Ref]
+- Catechin isolated from Japanese green tea significantly inhibits the growth of periodontal pathogens Porphyromonas gulae and Porphyromonas gingivalis in vitro in a dose-dependent manner. It also significantly suppresses hydrogen sulfide and methyl mercaptan production, which are major contributors to halitosis, even after short exposure. [Ref]
 
-• Catechin treatment significantly inhibits pro-inflammatory cytokine production (IL-1β, IL-6, TNFα) and phosphorylation of MAPKs (p-38, JNK) induced by P. gulae in vitro. [Ref]
+- Catechin treatment significantly inhibits pro-inflammatory cytokine production (IL-1β, IL-6, TNFα) and phosphorylation of MAPKs (p-38, JNK) induced by P. gulae in vitro. [Ref]
 
-• Daily oral treatment with catechin-containing wet food for 1 month significantly ameliorated halitosis and reduced P. gulae activity in both dogs and cats with periodontal disease. [Ref]
+- Daily oral treatment with catechin-containing wet food for 1 month significantly ameliorated halitosis and reduced P. gulae activity in both dogs and cats with periodontal disease. [Ref]
 
 Cons:
-• Catechin treatment had no significant impact on dental plaque and gingivitis in clinical studies after 1 month of treatment. [Ref]
+- Catechin treatment had no significant impact on dental plaque and gingivitis in clinical studies after 1 month of treatment. [Ref]
 
-• The inhibitory effect on biofilm formation was statistically significant but of small magnitude (<10% inhibition), even at the highest concentration tested. [Ref]
+- The inhibitory effect on biofilm formation was statistically significant but of small magnitude (<10% inhibition), even at the highest concentration tested. [Ref]
 
-• Longer treatment periods may be required to exhibit effects on gingivitis and plaque index; short-term treatment is a limitation. [Ref]`;
+- Longer treatment periods may be required to exhibit effects on gingivitis and plaque index; short-term treatment is a limitation. [Ref]`;
 
             const filteredProjects = mockProjects.filter(project =>
                 project.name.toLowerCase().includes(projectSearchQuery.toLowerCase())
@@ -246,204 +246,4 @@ Cons:
                                 <span>est</span>
                             </div>
                         </div>
-                        <div style={{ height: '2px', width: '100%', background: 'linear-gradient(to right, #006A86, #FDFF00, transparent)', borderRadius: '9999px', opacity: 0.3 }}></div>
-                    </div>
-
-                    {/* Main Content */}
-                    <div style={{ position: 'relative', zIndex: 10, flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                        
-                        {/* Project Selection - Fixed */}
-                        <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }}>
-                            <label style={{ display: 'block', fontSize: '11px', fontWeight: 500, color: 'rgba(249, 250, 249, 0.7)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Project</label>
-                            <div style={{ position: 'relative' }}>
-                                <button
-                                    onClick={() => setIsProjectDropdownOpen(!isProjectDropdownOpen)}
-                                    style={{ width: '100%', backgroundColor: '#0A0C12', border: '1px solid rgba(0, 106, 134, 0.4)', borderRadius: '6px', padding: '8px 12px', fontSize: '13px', textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', color: selectedProject ? '#F9FAF9' : 'rgba(249, 250, 249, 0.5)', transition: 'border-color 0.3s' }}
-                                    onMouseEnter={(e) => e.target.style.borderColor = 'rgba(253, 255, 0, 0.5)'}
-                                    onMouseLeave={(e) => e.target.style.borderColor = 'rgba(0, 106, 134, 0.4)'}
-                                >
-                                    <span>{selectedProject ? selectedProject.name : 'Select a project...'}</span>
-                                    <ChevronDownIcon className={isProjectDropdownOpen ? 'rotate-180' : ''} />
-                                </button>
-
-                                {isProjectDropdownOpen && (
-                                    <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '4px', backgroundColor: '#0A0C12', border: '1px solid rgba(0, 106, 134, 0.4)', borderRadius: '6px', boxShadow: '0 4px 6px rgba(0,0,0,0.3)', overflow: 'hidden', zIndex: 1000 }}>
-                                        <div style={{ padding: '8px', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }}>
-                                            <div style={{ position: 'relative' }}>
-                                                <div style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#84A7E2' }}>
-                                                    <SearchIcon size={14} />
-                                                </div>
-                                                <input
-                                                    type="text"
-                                                    placeholder="Search projects..."
-                                                    value={projectSearchQuery}
-                                                    onChange={(e) => setProjectSearchQuery(e.target.value)}
-                                                    style={{ width: '100%', backgroundColor: '#0A0C12', border: '1px solid rgba(0, 106, 134, 0.3)', borderRadius: '4px', paddingLeft: '32px', paddingRight: '8px', paddingTop: '6px', paddingBottom: '6px', fontSize: '12px', color: '#F9FAF9', outline: 'none' }}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="scrollable" style={{ maxHeight: '200px' }}>
-                                            {filteredProjects.map((project) => (
-                                                <button
-                                                    key={project.id}
-                                                    onClick={() => handleSelectProject(project)}
-                                                    style={{ width: '100%', textAlign: 'left', padding: '10px 12px', backgroundColor: 'transparent', border: 'none', cursor: 'pointer', borderBottom: '1px solid rgba(0, 106, 134, 0.1)', color: '#F9FAF9' }}
-                                                    onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(0, 106, 134, 0.2)'}
-                                                    onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                                                >
-                                                    <div style={{ fontSize: '13px', fontWeight: 500 }}>{project.name}</div>
-                                                    <div style={{ fontSize: '11px', color: '#84A7E2', marginTop: '2px' }}>{project.sourceCount} sources</div>
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
-                        {selectedProject && (
-                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                                {/* Sources Section - Scrollable */}
-                                <div style={{ flex: '0 0 auto', maxHeight: '35%', display: 'flex', flexDirection: 'column', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }}>
-                                    <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }}>
-                                        <h3 style={{ fontSize: '13px', fontWeight: 600, color: '#F9FAF9', margin: '0 0 8px 0' }}>Sources</h3>
-                                        <div style={{ position: 'relative' }}>
-                                            <div style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#84A7E2' }}>
-                                                <SearchIcon size={14} />
-                                            </div>
-                                            <input
-                                                type="text"
-                                                placeholder="Search sources..."
-                                                value={sourceSearchQuery}
-                                                onChange={(e) => setSourceSearchQuery(e.target.value)}
-                                                style={{ width: '100%', backgroundColor: '#0A0C12', border: '1px solid rgba(0, 106, 134, 0.3)', borderRadius: '6px', paddingLeft: '32px', paddingRight: '10px', paddingTop: '7px', paddingBottom: '7px', fontSize: '12px', color: '#F9FAF9', outline: 'none' }}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="scrollable" style={{ flex: 1, overflowY: 'auto', padding: '8px 16px' }}>
-                                        {filteredSources.map((source) => (
-                                            <div key={source.id} style={{ marginBottom: '16px', paddingBottom: '16px', borderBottom: '1px solid rgba(0, 106, 134, 0.15)' }}>
-                                                <div style={{ fontSize: '13px', color: '#F9FAF9', lineHeight: '1.4', marginBottom: '8px', fontWeight: 500 }}>
-                                                    {source.title}
-                                                </div>
-                                                <div style={{ fontSize: '12px', color: '#84A7E2', marginBottom: '8px' }}>
-                                                    <span style={{ fontWeight: 600 }}>{source.year}</span> · {source.authors}
-                                                </div>
-                                                <button
-                                                    onClick={() => insertSource(source)}
-                                                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: '#FDFF00' }}
-                                                    onMouseEnter={(e) => e.target.style.opacity = '0.8'}
-                                                    onMouseLeave={(e) => e.target.style.opacity = '1'}
-                                                >
-                                                    <ArrowLeftIcon />
-                                                    <span style={{ fontSize: '10px', marginTop: '2px' }}>Insert</span>
-                                                </button>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* AskIGOR Q&A Section - Fixed input, Scrollable answer */}
-                                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', borderBottom: '1px solid rgba(0, 106, 134, 0.2)', overflow: 'hidden' }}>
-                                    <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }}>
-                                        <h3 style={{ fontSize: '13px', fontWeight: 600, color: '#F9FAF9', margin: '0 0 8px 0' }}>AskIGOR Q&A</h3>
-                                        <textarea
-                                            placeholder="Ask a question about your project..."
-                                            value={askIgorQuery}
-                                            onChange={(e) => setAskIgorQuery(e.target.value)}
-                                            style={{ width: '100%', backgroundColor: '#0A0C12', border: '1px solid rgba(0, 106, 134, 0.3)', borderRadius: '6px', padding: '8px 10px', fontSize: '12px', color: '#F9FAF9', outline: 'none', resize: 'none', fontFamily: 'inherit', minHeight: '60px' }}
-                                            rows={2}
-                                        />
-                                        <button
-                                            onClick={handleAskIgor}
-                                            disabled={isLoadingIgor || !askIgorQuery.trim()}
-                                            style={{ width: '100%', backgroundColor: '#FDFF00', color: '#0A0C12', padding: '8px', borderRadius: '6px', fontSize: '12px', fontWeight: 500, border: 'none', cursor: isLoadingIgor || !askIgorQuery.trim() ? 'not-allowed' : 'pointer', marginTop: '8px', opacity: isLoadingIgor || !askIgorQuery.trim() ? 0.5 : 1 }}
-                                        >
-                                            {isLoadingIgor ? 'Analyzing...' : 'Ask IGOR'}
-                                        </button>
-                                    </div>
-                                    
-                                    {askIgorResponse && (
-                                        <div className="scrollable" style={{ flex: 1, overflowY: 'auto', padding: '12px 16px' }}>
-                                            <div style={{ fontSize: '12px', color: 'rgba(249, 250, 249, 0.9)', whiteSpace: 'pre-wrap', lineHeight: '1.6', marginBottom: '12px' }}>
-                                                {askIgorResponse}
-                                            </div>
-                                            <button
-                                                onClick={() => insertToDocument(askIgorResponse)}
-                                                style={{ width: '100%', background: 'linear-gradient(to right, #006A86, #84A7E2)', color: '#F9FAF9', padding: '8px', borderRadius: '6px', fontSize: '12px', fontWeight: 500, border: 'none', cursor: 'pointer' }}
-                                            >
-                                                Insert to Document
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Find New Sources Section - Fixed at bottom */}
-                                <div style={{ flex: '0 0 auto', padding: '12px 16px', borderTop: '2px solid rgba(253, 255, 0, 0.2)' }}>
-                                    <h3 style={{ fontSize: '13px', fontWeight: 600, color: '#F9FAF9', margin: '0 0 8px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                        <PlusCircleIcon />
-                                        Find New Sources
-                                    </h3>
-                                    <div style={{ position: 'relative' }}>
-                                        <div style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#84A7E2' }}>
-                                            <SearchIcon size={14} />
-                                        </div>
-                                        <input
-                                            type="text"
-                                            placeholder="Search for new sources..."
-                                            value={newSourceQuery}
-                                            onChange={(e) => setNewSourceQuery(e.target.value)}
-                                            style={{ width: '100%', backgroundColor: '#0A0C12', border: '1px solid rgba(0, 106, 134, 0.3)', borderRadius: '6px', paddingLeft: '32px', paddingRight: '10px', paddingTop: '7px', paddingBottom: '7px', fontSize: '12px', color: '#F9FAF9', outline: 'none' }}
-                                        />
-                                    </div>
-                                    <button
-                                        onClick={handleFindNewSources}
-                                        disabled={isLoadingNewSources || !newSourceQuery.trim()}
-                                        style={{ width: '100%', backgroundColor: '#006A86', color: '#FDFF00', padding: '8px', borderRadius: '6px', fontSize: '12px', fontWeight: 500, border: 'none', cursor: isLoadingNewSources || !newSourceQuery.trim() ? 'not-allowed' : 'pointer', marginTop: '8px', opacity: isLoadingNewSources || !newSourceQuery.trim() ? 0.5 : 1 }}
-                                    >
-                                        {isLoadingNewSources ? 'Searching...' : 'Search'}
-                                    </button>
-                                    
-                                    {newSources && (
-                                        <div className="scrollable" style={{ marginTop: '12px', maxHeight: '120px', overflowY: 'auto' }}>
-                                            {newSources.map((source) => (
-                                                <div key={source.id} style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid rgba(0, 106, 134, 0.15)' }}>
-                                                    <div style={{ fontSize: '12px', color: '#F9FAF9', lineHeight: '1.4', marginBottom: '6px', fontWeight: 500 }}>
-                                                        {source.title}
-                                                    </div>
-                                                    <div style={{ fontSize: '11px', color: '#84A7E2', marginBottom: '6px' }}>
-                                                        <span style={{ fontWeight: 600 }}>{source.year}</span> · {source.authors}
-                                                    </div>
-                                                    <button
-                                                        onClick={() => insertSource(source)}
-                                                        style={{ fontSize: '10px', color: '#FDFF00', background: 'none', border: 'none', padding: 0, cursor: 'pointer', textDecoration: 'underline' }}
-                                                    >
-                                                        Add to project & insert
-                                                    </button>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        )}
-
-                        {!selectedProject && (
-                            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px' }}>
-                                <div style={{ textAlign: 'center', color: 'rgba(249, 250, 249, 0.5)' }}>
-                                    <BookOpenIcon />
-                                    <p style={{ fontSize: '13px', marginTop: '12px', fontWeight: 300 }}>Select a project to get started</p>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            );
-        };
-
-        Office.onReady((info) => {
-            ReactDOM.render(<FindestAddin />, document.getElementById('root'));
-        });
-    </script>
-</body>
-</html>
+                        <div style={{ height: '2px', width: '100%', background: 'linear-gradient(to right, #006A86, #FD
