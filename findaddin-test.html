@@ -14,7 +14,6 @@
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             overflow: hidden;
-            background: #f5f5f5;
         }
         #root {
             width: 100%;
@@ -23,20 +22,27 @@
         .scrollable {
             overflow-y: auto;
             scrollbar-width: thin;
-            scrollbar-color: #ccc #f5f5f5;
+            scrollbar-color: #FDFF00 #0A0C12;
         }
         .scrollable::-webkit-scrollbar {
             width: 6px;
         }
         .scrollable::-webkit-scrollbar-track {
-            background: #f5f5f5;
+            background: #0A0C12;
         }
         .scrollable::-webkit-scrollbar-thumb {
-            background: #ccc;
+            background: #006A86;
             border-radius: 3px;
         }
         .scrollable::-webkit-scrollbar-thumb:hover {
-            background: #999;
+            background: #FDFF00;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.05; }
+            50% { opacity: 0.1; }
+        }
+        .animate-pulse {
+            animation: pulse 3s ease-in-out infinite;
         }
     </style>
 </head>
@@ -50,6 +56,13 @@
             <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="8"></circle>
                 <path d="m21 21-4.35-4.35"></path>
+            </svg>
+        );
+        
+        const ArrowLeftIcon = () => (
+            <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
         );
         
@@ -216,38 +229,48 @@ Cons:
             };
 
             return (
-                <div style={{ height: '100vh', backgroundColor: '#f5f5f5', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ height: '100vh', backgroundColor: '#0A0C12', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                    {/* Animated background effects */}
+                    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+                        <div className="animate-pulse" style={{ position: 'absolute', top: '25%', left: '-3rem', width: '12rem', height: '12rem', backgroundColor: '#FDFF00', opacity: 0.05, filter: 'blur(3rem)', borderRadius: '9999px' }}></div>
+                        <div style={{ position: 'absolute', bottom: '33%', right: '-3rem', width: '10rem', height: '10rem', backgroundColor: '#006A86', opacity: 0.1, filter: 'blur(3rem)', borderRadius: '9999px' }}></div>
+                        <div className="animate-pulse" style={{ position: 'absolute', top: '66%', left: '50%', width: '8rem', height: '8rem', backgroundColor: '#84A7E2', opacity: 0.05, filter: 'blur(2rem)', borderRadius: '9999px', animationDelay: '1s' }}></div>
+                    </div>
+
                     {/* Header */}
-                    <div style={{ backgroundColor: '#fff', padding: '12px 16px', borderBottom: '1px solid #e0e0e0', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div style={{ position: 'relative', zIndex: 10, padding: '12px 16px', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                             <BookOpenIcon />
-                            <div style={{ fontSize: '18px', fontWeight: 600, color: '#1a1a1a' }}>
-                                <span style={{ color: '#2563eb' }}>Find</span>
+                            <div style={{ fontSize: '20px', fontWeight: 300, color: '#F9FAF9' }}>
+                                <span style={{ color: '#FDFF00' }}>Find</span>
                                 <span>est</span>
                             </div>
                         </div>
+                        <div style={{ height: '2px', width: '100%', background: 'linear-gradient(to right, #006A86, #FDFF00, transparent)', borderRadius: '9999px', opacity: 0.3 }}></div>
                     </div>
 
                     {/* Main Content */}
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                    <div style={{ position: 'relative', zIndex: 10, flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
                         
                         {/* Project Selection - Fixed */}
-                        <div style={{ padding: '12px 16px', backgroundColor: '#fff', borderBottom: '1px solid #e0e0e0' }}>
-                            <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#666', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Project</label>
+                        <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }}>
+                            <label style={{ display: 'block', fontSize: '11px', fontWeight: 500, color: 'rgba(249, 250, 249, 0.7)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Project</label>
                             <div style={{ position: 'relative' }}>
                                 <button
                                     onClick={() => setIsProjectDropdownOpen(!isProjectDropdownOpen)}
-                                    style={{ width: '100%', backgroundColor: '#fff', border: '1px solid #d1d5db', borderRadius: '6px', padding: '8px 12px', fontSize: '13px', textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', color: selectedProject ? '#1a1a1a' : '#999' }}
+                                    style={{ width: '100%', backgroundColor: '#0A0C12', border: '1px solid rgba(0, 106, 134, 0.4)', borderRadius: '6px', padding: '8px 12px', fontSize: '13px', textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', color: selectedProject ? '#F9FAF9' : 'rgba(249, 250, 249, 0.5)', transition: 'border-color 0.3s' }}
+                                    onMouseEnter={(e) => e.target.style.borderColor = 'rgba(253, 255, 0, 0.5)'}
+                                    onMouseLeave={(e) => e.target.style.borderColor = 'rgba(0, 106, 134, 0.4)'}
                                 >
                                     <span>{selectedProject ? selectedProject.name : 'Select a project...'}</span>
                                     <ChevronDownIcon className={isProjectDropdownOpen ? 'rotate-180' : ''} />
                                 </button>
 
                                 {isProjectDropdownOpen && (
-                                    <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '4px', backgroundColor: '#fff', border: '1px solid #d1d5db', borderRadius: '6px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', overflow: 'hidden', zIndex: 1000 }}>
-                                        <div style={{ padding: '8px', borderBottom: '1px solid #e5e7eb' }}>
+                                    <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '4px', backgroundColor: '#0A0C12', border: '1px solid rgba(0, 106, 134, 0.4)', borderRadius: '6px', boxShadow: '0 4px 6px rgba(0,0,0,0.3)', overflow: 'hidden', zIndex: 1000 }}>
+                                        <div style={{ padding: '8px', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }}>
                                             <div style={{ position: 'relative' }}>
-                                                <div style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#999' }}>
+                                                <div style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#84A7E2' }}>
                                                     <SearchIcon size={14} />
                                                 </div>
                                                 <input
@@ -255,7 +278,7 @@ Cons:
                                                     placeholder="Search projects..."
                                                     value={projectSearchQuery}
                                                     onChange={(e) => setProjectSearchQuery(e.target.value)}
-                                                    style={{ width: '100%', backgroundColor: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '4px', paddingLeft: '32px', paddingRight: '8px', paddingTop: '6px', paddingBottom: '6px', fontSize: '12px', color: '#1a1a1a', outline: 'none' }}
+                                                    style={{ width: '100%', backgroundColor: '#0A0C12', border: '1px solid rgba(0, 106, 134, 0.3)', borderRadius: '4px', paddingLeft: '32px', paddingRight: '8px', paddingTop: '6px', paddingBottom: '6px', fontSize: '12px', color: '#F9FAF9', outline: 'none' }}
                                                 />
                                             </div>
                                         </div>
@@ -264,12 +287,12 @@ Cons:
                                                 <button
                                                     key={project.id}
                                                     onClick={() => handleSelectProject(project)}
-                                                    style={{ width: '100%', textAlign: 'left', padding: '10px 12px', backgroundColor: 'transparent', border: 'none', cursor: 'pointer', borderBottom: '1px solid #f3f4f6' }}
-                                                    onMouseEnter={(e) => e.target.style.backgroundColor = '#f9fafb'}
+                                                    style={{ width: '100%', textAlign: 'left', padding: '10px 12px', backgroundColor: 'transparent', border: 'none', cursor: 'pointer', borderBottom: '1px solid rgba(0, 106, 134, 0.1)', color: '#F9FAF9' }}
+                                                    onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(0, 106, 134, 0.2)'}
                                                     onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
                                                 >
-                                                    <div style={{ fontSize: '13px', fontWeight: 500, color: '#1a1a1a' }}>{project.name}</div>
-                                                    <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '2px' }}>{project.sourceCount} sources</div>
+                                                    <div style={{ fontSize: '13px', fontWeight: 500 }}>{project.name}</div>
+                                                    <div style={{ fontSize: '11px', color: '#84A7E2', marginTop: '2px' }}>{project.sourceCount} sources</div>
                                                 </button>
                                             ))}
                                         </div>
@@ -281,11 +304,11 @@ Cons:
                         {selectedProject && (
                             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
                                 {/* Sources Section - Scrollable */}
-                                <div style={{ flex: '0 0 auto', maxHeight: '35%', display: 'flex', flexDirection: 'column', backgroundColor: '#fff', borderBottom: '1px solid #e0e0e0' }}>
-                                    <div style={{ padding: '12px 16px', borderBottom: '1px solid #e5e7eb' }}>
-                                        <h3 style={{ fontSize: '13px', fontWeight: 600, color: '#1a1a1a', margin: '0 0 8px 0' }}>Sources</h3>
+                                <div style={{ flex: '0 0 auto', maxHeight: '35%', display: 'flex', flexDirection: 'column', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }}>
+                                    <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }}>
+                                        <h3 style={{ fontSize: '13px', fontWeight: 600, color: '#F9FAF9', margin: '0 0 8px 0' }}>Sources</h3>
                                         <div style={{ position: 'relative' }}>
-                                            <div style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#999' }}>
+                                            <div style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#84A7E2' }}>
                                                 <SearchIcon size={14} />
                                             </div>
                                             <input
@@ -293,46 +316,48 @@ Cons:
                                                 placeholder="Search sources..."
                                                 value={sourceSearchQuery}
                                                 onChange={(e) => setSourceSearchQuery(e.target.value)}
-                                                style={{ width: '100%', backgroundColor: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '6px', paddingLeft: '32px', paddingRight: '10px', paddingTop: '7px', paddingBottom: '7px', fontSize: '12px', color: '#1a1a1a', outline: 'none' }}
+                                                style={{ width: '100%', backgroundColor: '#0A0C12', border: '1px solid rgba(0, 106, 134, 0.3)', borderRadius: '6px', paddingLeft: '32px', paddingRight: '10px', paddingTop: '7px', paddingBottom: '7px', fontSize: '12px', color: '#F9FAF9', outline: 'none' }}
                                             />
                                         </div>
                                     </div>
                                     <div className="scrollable" style={{ flex: 1, overflowY: 'auto', padding: '8px 16px' }}>
                                         {filteredSources.map((source) => (
-                                            <div key={source.id} style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid #f3f4f6' }}>
-                                                <div style={{ display: 'flex', gap: '8px', marginBottom: '4px' }}>
-                                                    <span style={{ fontSize: '12px', color: '#1a1a1a', fontWeight: 600, flexShrink: 0 }}>{source.year}</span>
-                                                    <div style={{ flex: 1 }}>
-                                                        <div style={{ fontSize: '12px', color: '#4b5563', marginBottom: '2px' }}>{source.authors}</div>
-                                                        <div style={{ fontSize: '12px', color: '#1a1a1a', lineHeight: '1.4', marginBottom: '6px' }}>{source.title}</div>
-                                                        <button
-                                                            onClick={() => insertSource(source)}
-                                                            style={{ fontSize: '11px', color: '#2563eb', background: 'none', border: 'none', padding: 0, cursor: 'pointer', textDecoration: 'underline' }}
-                                                        >
-                                                            Insert citation
-                                                        </button>
-                                                    </div>
+                                            <div key={source.id} style={{ marginBottom: '16px', paddingBottom: '16px', borderBottom: '1px solid rgba(0, 106, 134, 0.15)' }}>
+                                                <div style={{ fontSize: '13px', color: '#F9FAF9', lineHeight: '1.4', marginBottom: '8px', fontWeight: 500 }}>
+                                                    {source.title}
                                                 </div>
+                                                <div style={{ fontSize: '12px', color: '#84A7E2', marginBottom: '8px' }}>
+                                                    <span style={{ fontWeight: 600 }}>{source.year}</span> · {source.authors}
+                                                </div>
+                                                <button
+                                                    onClick={() => insertSource(source)}
+                                                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: '#FDFF00' }}
+                                                    onMouseEnter={(e) => e.target.style.opacity = '0.8'}
+                                                    onMouseLeave={(e) => e.target.style.opacity = '1'}
+                                                >
+                                                    <ArrowLeftIcon />
+                                                    <span style={{ fontSize: '10px', marginTop: '2px' }}>Insert</span>
+                                                </button>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
 
-                                {/* AskIGOR Q&A Section - Scrollable */}
-                                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', backgroundColor: '#fff', borderBottom: '1px solid #e0e0e0' }}>
-                                    <div style={{ padding: '12px 16px', borderBottom: '1px solid #e5e7eb' }}>
-                                        <h3 style={{ fontSize: '13px', fontWeight: 600, color: '#1a1a1a', margin: '0 0 8px 0' }}>AskIGOR Q&A</h3>
+                                {/* AskIGOR Q&A Section - Fixed input, Scrollable answer */}
+                                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', borderBottom: '1px solid rgba(0, 106, 134, 0.2)', overflow: 'hidden' }}>
+                                    <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }}>
+                                        <h3 style={{ fontSize: '13px', fontWeight: 600, color: '#F9FAF9', margin: '0 0 8px 0' }}>AskIGOR Q&A</h3>
                                         <textarea
                                             placeholder="Ask a question about your project..."
                                             value={askIgorQuery}
                                             onChange={(e) => setAskIgorQuery(e.target.value)}
-                                            style={{ width: '100%', backgroundColor: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '6px', padding: '8px 10px', fontSize: '12px', color: '#1a1a1a', outline: 'none', resize: 'none', fontFamily: 'inherit', minHeight: '60px' }}
+                                            style={{ width: '100%', backgroundColor: '#0A0C12', border: '1px solid rgba(0, 106, 134, 0.3)', borderRadius: '6px', padding: '8px 10px', fontSize: '12px', color: '#F9FAF9', outline: 'none', resize: 'none', fontFamily: 'inherit', minHeight: '60px' }}
                                             rows={2}
                                         />
                                         <button
                                             onClick={handleAskIgor}
                                             disabled={isLoadingIgor || !askIgorQuery.trim()}
-                                            style={{ width: '100%', backgroundColor: '#2563eb', color: '#fff', padding: '8px', borderRadius: '6px', fontSize: '12px', fontWeight: 500, border: 'none', cursor: isLoadingIgor || !askIgorQuery.trim() ? 'not-allowed' : 'pointer', marginTop: '8px', opacity: isLoadingIgor || !askIgorQuery.trim() ? 0.5 : 1 }}
+                                            style={{ width: '100%', backgroundColor: '#FDFF00', color: '#0A0C12', padding: '8px', borderRadius: '6px', fontSize: '12px', fontWeight: 500, border: 'none', cursor: isLoadingIgor || !askIgorQuery.trim() ? 'not-allowed' : 'pointer', marginTop: '8px', opacity: isLoadingIgor || !askIgorQuery.trim() ? 0.5 : 1 }}
                                         >
                                             {isLoadingIgor ? 'Analyzing...' : 'Ask IGOR'}
                                         </button>
@@ -340,12 +365,12 @@ Cons:
                                     
                                     {askIgorResponse && (
                                         <div className="scrollable" style={{ flex: 1, overflowY: 'auto', padding: '12px 16px' }}>
-                                            <div style={{ fontSize: '12px', color: '#1a1a1a', whiteSpace: 'pre-wrap', lineHeight: '1.6', marginBottom: '12px' }}>
+                                            <div style={{ fontSize: '12px', color: 'rgba(249, 250, 249, 0.9)', whiteSpace: 'pre-wrap', lineHeight: '1.6', marginBottom: '12px' }}>
                                                 {askIgorResponse}
                                             </div>
                                             <button
                                                 onClick={() => insertToDocument(askIgorResponse)}
-                                                style={{ width: '100%', backgroundColor: '#059669', color: '#fff', padding: '8px', borderRadius: '6px', fontSize: '12px', fontWeight: 500, border: 'none', cursor: 'pointer' }}
+                                                style={{ width: '100%', background: 'linear-gradient(to right, #006A86, #84A7E2)', color: '#F9FAF9', padding: '8px', borderRadius: '6px', fontSize: '12px', fontWeight: 500, border: 'none', cursor: 'pointer' }}
                                             >
                                                 Insert to Document
                                             </button>
@@ -354,13 +379,13 @@ Cons:
                                 </div>
 
                                 {/* Find New Sources Section - Fixed at bottom */}
-                                <div style={{ flex: '0 0 auto', backgroundColor: '#fff', padding: '12px 16px', borderTop: '2px solid #e5e7eb' }}>
-                                    <h3 style={{ fontSize: '13px', fontWeight: 600, color: '#1a1a1a', margin: '0 0 8px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <div style={{ flex: '0 0 auto', padding: '12px 16px', borderTop: '2px solid rgba(253, 255, 0, 0.2)' }}>
+                                    <h3 style={{ fontSize: '13px', fontWeight: 600, color: '#F9FAF9', margin: '0 0 8px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
                                         <PlusCircleIcon />
                                         Find New Sources
                                     </h3>
                                     <div style={{ position: 'relative' }}>
-                                        <div style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#999' }}>
+                                        <div style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#84A7E2' }}>
                                             <SearchIcon size={14} />
                                         </div>
                                         <input
@@ -368,34 +393,33 @@ Cons:
                                             placeholder="Search for new sources..."
                                             value={newSourceQuery}
                                             onChange={(e) => setNewSourceQuery(e.target.value)}
-                                            style={{ width: '100%', backgroundColor: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '6px', paddingLeft: '32px', paddingRight: '10px', paddingTop: '7px', paddingBottom: '7px', fontSize: '12px', color: '#1a1a1a', outline: 'none' }}
+                                            style={{ width: '100%', backgroundColor: '#0A0C12', border: '1px solid rgba(0, 106, 134, 0.3)', borderRadius: '6px', paddingLeft: '32px', paddingRight: '10px', paddingTop: '7px', paddingBottom: '7px', fontSize: '12px', color: '#F9FAF9', outline: 'none' }}
                                         />
                                     </div>
                                     <button
                                         onClick={handleFindNewSources}
                                         disabled={isLoadingNewSources || !newSourceQuery.trim()}
-                                        style={{ width: '100%', backgroundColor: '#7c3aed', color: '#fff', padding: '8px', borderRadius: '6px', fontSize: '12px', fontWeight: 500, border: 'none', cursor: isLoadingNewSources || !newSourceQuery.trim() ? 'not-allowed' : 'pointer', marginTop: '8px', opacity: isLoadingNewSources || !newSourceQuery.trim() ? 0.5 : 1 }}
+                                        style={{ width: '100%', backgroundColor: '#006A86', color: '#FDFF00', padding: '8px', borderRadius: '6px', fontSize: '12px', fontWeight: 500, border: 'none', cursor: isLoadingNewSources || !newSourceQuery.trim() ? 'not-allowed' : 'pointer', marginTop: '8px', opacity: isLoadingNewSources || !newSourceQuery.trim() ? 0.5 : 1 }}
                                     >
                                         {isLoadingNewSources ? 'Searching...' : 'Search'}
                                     </button>
                                     
                                     {newSources && (
-                                        <div className="scrollable" style={{ marginTop: '12px', maxHeight: '150px', overflowY: 'auto' }}>
+                                        <div className="scrollable" style={{ marginTop: '12px', maxHeight: '120px', overflowY: 'auto' }}>
                                             {newSources.map((source) => (
-                                                <div key={source.id} style={{ marginBottom: '10px', paddingBottom: '10px', borderBottom: '1px solid #f3f4f6' }}>
-                                                    <div style={{ display: 'flex', gap: '8px' }}>
-                                                        <span style={{ fontSize: '11px', color: '#1a1a1a', fontWeight: 600, flexShrink: 0 }}>{source.year}</span>
-                                                        <div style={{ flex: 1 }}>
-                                                            <div style={{ fontSize: '11px', color: '#4b5563', marginBottom: '2px' }}>{source.authors}</div>
-                                                            <div style={{ fontSize: '11px', color: '#1a1a1a', lineHeight: '1.4', marginBottom: '4px' }}>{source.title}</div>
-                                                            <button
-                                                                onClick={() => insertSource(source)}
-                                                                style={{ fontSize: '10px', color: '#7c3aed', background: 'none', border: 'none', padding: 0, cursor: 'pointer', textDecoration: 'underline' }}
-                                                            >
-                                                                Add to project & insert
-                                                            </button>
-                                                        </div>
+                                                <div key={source.id} style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid rgba(0, 106, 134, 0.15)' }}>
+                                                    <div style={{ fontSize: '12px', color: '#F9FAF9', lineHeight: '1.4', marginBottom: '6px', fontWeight: 500 }}>
+                                                        {source.title}
                                                     </div>
+                                                    <div style={{ fontSize: '11px', color: '#84A7E2', marginBottom: '6px' }}>
+                                                        <span style={{ fontWeight: 600 }}>{source.year}</span> · {source.authors}
+                                                    </div>
+                                                    <button
+                                                        onClick={() => insertSource(source)}
+                                                        style={{ fontSize: '10px', color: '#FDFF00', background: 'none', border: 'none', padding: 0, cursor: 'pointer', textDecoration: 'underline' }}
+                                                    >
+                                                        Add to project & insert
+                                                    </button>
                                                 </div>
                                             ))}
                                         </div>
@@ -406,9 +430,9 @@ Cons:
 
                         {!selectedProject && (
                             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px' }}>
-                                <div style={{ textAlign: 'center', color: '#9ca3af' }}>
+                                <div style={{ textAlign: 'center', color: 'rgba(249, 250, 249, 0.5)' }}>
                                     <BookOpenIcon />
-                                    <p style={{ fontSize: '13px', marginTop: '12px' }}>Select a project to get started</p>
+                                    <p style={{ fontSize: '13px', marginTop: '12px', fontWeight: 300 }}>Select a project to get started</p>
                                 </div>
                             </div>
                         )}
