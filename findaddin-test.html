@@ -6,7 +6,6 @@
     <title>Findest Office Add-in</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
     <style>
         * { box-sizing: border-box; }
@@ -39,475 +38,275 @@
 <body>
     <div id="root"></div>
     
-    <script type="text/babel">
-        const { useState } = React;
-        
-        const SearchIcon = () => (
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.35-4.35"></path>
-            </svg>
-        );
-        
-        const PlusIcon = () => (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="8" x2="12" y2="16"></line>
-                <line x1="8" y1="12" x2="16" y2="12"></line>
-            </svg>
-        );
-        
-        const FindestAddin = () => {
-            const [selectedProject, setSelectedProject] = useState(null);
-            const [sourceSearchQuery, setSourceSearchQuery] = useState('');
-            const [askIgorQuery, setAskIgorQuery] = useState('');
-            const [askIgorResponse, setAskIgorResponse] = useState(null);
-            const [isLoadingIgor, setIsLoadingIgor] = useState(false);
-            const [newSourceQuery, setNewSourceQuery] = useState('');
-            const [isLoadingNewSources, setIsLoadingNewSources] = useState(false);
-            const [newSources, setNewSources] = useState(null);
-
-            const mockProjects = [
-                { id: 1, name: 'Veterinary Periodontal Research 2024', sourceCount: 47 },
-                { id: 2, name: 'Canine Nutrition Studies', sourceCount: 32 },
-                { id: 3, name: 'Feline Behavioral Analysis', sourceCount: 28 }
-            ];
-
-            const mockSources = [
-                { 
-                    id: 1, 
-                    year: 1978,
-                    authors: 'University of Amsterdam, B. van Geel',
-                    title: 'A palaeoecological study of holocene peat bog sections in Germany and The Netherlands',
-                    type: 'Science'
-                },
-                { 
-                    id: 2, 
-                    year: 1985,
-                    authors: 'Utrecht University, J.H.J. Joosten',
-                    title: 'A 130 year micro- and macrofossil record from regeneration peat in former peasant peat pits',
-                    type: 'Science'
-                },
-                { 
-                    id: 3, 
-                    year: 1990,
-                    authors: 'University of Amsterdam, M. Pedroli, G. Bas, Guus J. Borger',
-                    title: 'Historical land use and hydrology. A case study from eastern Noord-Brabant',
-                    type: 'Science'
-                }
-            ];
-
-            const mockAskIgorResponse = `Pros and Cons of Catechin Treatment for Periodontal Disease in Dogs and Cats
-
-Pros:
-• Catechin isolated from Japanese green tea significantly inhibits the growth of periodontal pathogens Porphyromonas gulae and Porphyromonas gingivalis in vitro in a dose-dependent manner. [Ref]
-
-• Catechin treatment significantly inhibits pro-inflammatory cytokine production (IL-1β, IL-6, TNFα) and phosphorylation of MAPKs (p-38, JNK) induced by P. gulae in vitro. [Ref]
-
-• Daily oral treatment with catechin-containing wet food for 1 month significantly ameliorated halitosis and reduced P. gulae activity in both dogs and cats with periodontal disease. [Ref]
-
-Cons:
-• Catechin treatment had no significant impact on dental plaque and gingivitis in clinical studies after 1 month of treatment. [Ref]
-
-• The inhibitory effect on biofilm formation was statistically significant but of small magnitude (<10% inhibition), even at the highest concentration tested. [Ref]`;
-
-            const filteredSources = mockSources.filter(s =>
-                s.title.toLowerCase().includes(sourceSearchQuery.toLowerCase()) ||
-                s.authors.toLowerCase().includes(sourceSearchQuery.toLowerCase())
+    <script>
+        (function() {
+            const { useState } = React;
+            const { createElement: h } = React;
+            
+            const SearchIcon = () => h('svg', { width: 14, height: 14, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
+                h('circle', { cx: 11, cy: 11, r: 8 }),
+                h('path', { d: 'm21 21-4.35-4.35' })
             );
+            
+            const PlusIcon = () => h('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
+                h('circle', { cx: 12, cy: 12, r: 10 }),
+                h('line', { x1: 12, y1: 8, x2: 12, y2: 16 }),
+                h('line', { x1: 8, y1: 12, x2: 16, y2: 12 })
+            );
+            
+            const FindestAddin = () => {
+                const [selectedProject, setSelectedProject] = useState(null);
+                const [sourceSearchQuery, setSourceSearchQuery] = useState('');
+                const [askIgorQuery, setAskIgorQuery] = useState('');
+                const [askIgorResponse, setAskIgorResponse] = useState(null);
+                const [isLoadingIgor, setIsLoadingIgor] = useState(false);
+                const [newSourceQuery, setNewSourceQuery] = useState('');
+                const [isLoadingNewSources, setIsLoadingNewSources] = useState(false);
+                const [newSources, setNewSources] = useState(null);
 
-            const handleAskIgor = () => {
-                if (!askIgorQuery.trim()) return;
-                setIsLoadingIgor(true);
-                setTimeout(() => {
-                    setAskIgorResponse(mockAskIgorResponse);
-                    setIsLoadingIgor(false);
-                }, 1500);
-            };
+                const mockProjects = [
+                    { id: 1, name: 'Veterinary Periodontal Research 2024', sourceCount: 47 },
+                    { id: 2, name: 'Canine Nutrition Studies', sourceCount: 32 },
+                    { id: 3, name: 'Feline Behavioral Analysis', sourceCount: 28 }
+                ];
 
-            const handleFindNewSources = () => {
-                if (!newSourceQuery.trim()) return;
-                setIsLoadingNewSources(true);
-                setTimeout(() => {
-                    setNewSources([
-                        { id: 101, year: 2023, authors: 'Smith J., Lee K.', title: 'Recent advances in periodontal treatment methodologies', type: 'Science' },
-                        { id: 102, year: 2024, authors: 'Johnson R.', title: 'Comparative analysis of dental care in small breeds', type: 'Science' }
-                    ]);
-                    setIsLoadingNewSources(false);
-                }, 1500);
-            };
+                const mockSources = [
+                    { 
+                        id: 1, 
+                        year: 1978,
+                        authors: 'University of Amsterdam, B. van Geel',
+                        title: 'A palaeoecological study of holocene peat bog sections in Germany and The Netherlands',
+                        type: 'Science'
+                    },
+                    { 
+                        id: 2, 
+                        year: 1985,
+                        authors: 'Utrecht University, J.H.J. Joosten',
+                        title: 'A 130 year micro- and macrofossil record from regeneration peat in former peasant peat pits',
+                        type: 'Science'
+                    },
+                    { 
+                        id: 3, 
+                        year: 1990,
+                        authors: 'University of Amsterdam, M. Pedroli, G. Bas, Guus J. Borger',
+                        title: 'Historical land use and hydrology. A case study from eastern Noord-Brabant',
+                        type: 'Science'
+                    }
+                ];
 
-            const insertSource = (source) => {
-                const citation = `${source.authors} (${source.year}). ${source.title}.`;
-                if (typeof Office !== 'undefined' && Office.context && Office.context.document) {
-                    Office.context.document.setSelectedDataAsync(
-                        citation,
-                        { coercionType: Office.CoercionType.Text },
-                        (result) => {
-                            if (result.status === Office.AsyncResultStatus.Succeeded) {
-                                console.log('Citation inserted successfully');
+                const mockAskIgorResponse = 'Pros and Cons of Catechin Treatment for Periodontal Disease in Dogs and Cats\n\nPros:\n• Catechin isolated from Japanese green tea significantly inhibits the growth of periodontal pathogens Porphyromonas gulae and Porphyromonas gingivalis in vitro in a dose-dependent manner. [Ref]\n\n• Catechin treatment significantly inhibits pro-inflammatory cytokine production (IL-1β, IL-6, TNFα) and phosphorylation of MAPKs (p-38, JNK) induced by P. gulae in vitro. [Ref]\n\n• Daily oral treatment with catechin-containing wet food for 1 month significantly ameliorated halitosis and reduced P. gulae activity in both dogs and cats with periodontal disease. [Ref]\n\nCons:\n• Catechin treatment had no significant impact on dental plaque and gingivitis in clinical studies after 1 month of treatment. [Ref]\n\n• The inhibitory effect on biofilm formation was statistically significant but of small magnitude (<10% inhibition), even at the highest concentration tested. [Ref]';
+
+                const filteredSources = mockSources.filter(s =>
+                    s.title.toLowerCase().includes(sourceSearchQuery.toLowerCase()) ||
+                    s.authors.toLowerCase().includes(sourceSearchQuery.toLowerCase())
+                );
+
+                const handleAskIgor = () => {
+                    if (!askIgorQuery.trim()) return;
+                    setIsLoadingIgor(true);
+                    setTimeout(() => {
+                        setAskIgorResponse(mockAskIgorResponse);
+                        setIsLoadingIgor(false);
+                    }, 1500);
+                };
+
+                const handleFindNewSources = () => {
+                    if (!newSourceQuery.trim()) return;
+                    setIsLoadingNewSources(true);
+                    setTimeout(() => {
+                        setNewSources([
+                            { id: 101, year: 2023, authors: 'Smith J., Lee K.', title: 'Recent advances in periodontal treatment methodologies', type: 'Science' },
+                            { id: 102, year: 2024, authors: 'Johnson R.', title: 'Comparative analysis of dental care in small breeds', type: 'Science' }
+                        ]);
+                        setIsLoadingNewSources(false);
+                    }, 1500);
+                };
+
+                const insertSource = (source) => {
+                    const citation = source.authors + ' (' + source.year + '). ' + source.title + '.';
+                    if (typeof Office !== 'undefined' && Office.context && Office.context.document) {
+                        Office.context.document.setSelectedDataAsync(
+                            citation,
+                            { coercionType: Office.CoercionType.Text },
+                            (result) => {
+                                if (result.status === Office.AsyncResultStatus.Succeeded) {
+                                    alert('✓ Citation inserted!');
+                                }
                             }
-                        }
-                    );
-                } else {
-                    alert('Citation inserted: ' + citation);
-                }
-            };
+                        );
+                    } else {
+                        alert('Citation: ' + citation);
+                    }
+                };
 
-            const insertToDocument = (text) => {
-                if (typeof Office !== 'undefined' && Office.context && Office.context.document) {
-                    Office.context.document.setSelectedDataAsync(
-                        text,
-                        { coercionType: Office.CoercionType.Text },
-                        (result) => {
-                            if (result.status === Office.AsyncResultStatus.Succeeded) {
-                                console.log('Content inserted successfully');
+                const insertToDocument = (text) => {
+                    if (typeof Office !== 'undefined' && Office.context && Office.context.document) {
+                        Office.context.document.setSelectedDataAsync(
+                            text,
+                            { coercionType: Office.CoercionType.Text },
+                            (result) => {
+                                if (result.status === Office.AsyncResultStatus.Succeeded) {
+                                    alert('✓ Content inserted!');
+                                }
                             }
-                        }
-                    );
-                } else {
-                    alert('Content inserted to document');
-                }
-            };
+                        );
+                    } else {
+                        alert('Content would be inserted');
+                    }
+                };
 
-            return (
-                <div style={{ 
-                    height: '100vh', 
-                    backgroundColor: '#0A0C12', 
-                    display: 'flex', 
-                    flexDirection: 'column',
-                    color: '#F9FAF9',
-                    position: 'relative'
-                }}>
-                    {/* Background effects */}
-                    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-                        <div className="animate-pulse" style={{ 
-                            position: 'absolute', 
-                            top: '25%', 
-                            left: '-3rem', 
-                            width: '12rem', 
-                            height: '12rem', 
-                            backgroundColor: '#FDFF00', 
-                            opacity: 0.05, 
-                            filter: 'blur(3rem)', 
-                            borderRadius: '9999px' 
-                        }}></div>
-                        <div style={{ 
-                            position: 'absolute', 
-                            bottom: '33%', 
-                            right: '-3rem', 
-                            width: '10rem', 
-                            height: '10rem', 
-                            backgroundColor: '#006A86', 
-                            opacity: 0.1, 
-                            filter: 'blur(3rem)', 
-                            borderRadius: '9999px' 
-                        }}></div>
-                    </div>
-
-                    {/* Header */}
-                    <div style={{ 
-                        position: 'relative', 
-                        zIndex: 10, 
-                        padding: '12px 16px', 
-                        borderBottom: '1px solid rgba(0, 106, 134, 0.2)' 
-                    }}>
-                        <div style={{ fontSize: '20px', fontWeight: 300, marginBottom: '8px' }}>
-                            <span style={{ color: '#FDFF00' }}>Find</span>
-                            <span>est</span>
-                        </div>
-                        <div style={{ 
-                            height: '2px', 
-                            width: '100%', 
-                            background: 'linear-gradient(to right, #006A86, #FDFF00, transparent)', 
-                            borderRadius: '9999px', 
-                            opacity: 0.3 
-                        }}></div>
-                    </div>
-
-                    {/* Main content */}
-                    <div style={{ position: 'relative', zIndex: 10, flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                        
-                        {/* Project dropdown */}
-                        <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }}>
-                            <label style={{ 
-                                display: 'block', 
-                                fontSize: '11px', 
-                                color: 'rgba(249, 250, 249, 0.7)', 
-                                marginBottom: '6px',
-                                textTransform: 'uppercase',
-                                fontWeight: 500,
-                                letterSpacing: '0.5px'
-                            }}>PROJECT</label>
-                            <select
-                                onChange={(e) => {
+                return h('div', {
+                    style: { 
+                        height: '100vh', 
+                        backgroundColor: '#0A0C12', 
+                        display: 'flex', 
+                        flexDirection: 'column',
+                        color: '#F9FAF9',
+                        position: 'relative'
+                    }
+                }, 
+                    // Background
+                    h('div', { style: { position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }},
+                        h('div', { className: 'animate-pulse', style: { position: 'absolute', top: '25%', left: '-3rem', width: '12rem', height: '12rem', backgroundColor: '#FDFF00', opacity: 0.05, filter: 'blur(3rem)', borderRadius: '9999px' }}),
+                        h('div', { style: { position: 'absolute', bottom: '33%', right: '-3rem', width: '10rem', height: '10rem', backgroundColor: '#006A86', opacity: 0.1, filter: 'blur(3rem)', borderRadius: '9999px' }})
+                    ),
+                    
+                    // Header
+                    h('div', { style: { position: 'relative', zIndex: 10, padding: '12px 16px', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }},
+                        h('div', { style: { fontSize: '20px', fontWeight: 300, marginBottom: '8px' }},
+                            h('span', { style: { color: '#FDFF00' }}, 'Find'),
+                            h('span', null, 'est')
+                        ),
+                        h('div', { style: { height: '2px', width: '100%', background: 'linear-gradient(to right, #006A86, #FDFF00, transparent)', borderRadius: '9999px', opacity: 0.3 }})
+                    ),
+                    
+                    // Main
+                    h('div', { style: { position: 'relative', zIndex: 10, flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }},
+                        // Project dropdown
+                        h('div', { style: { padding: '12px 16px', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }},
+                            h('label', { style: { display: 'block', fontSize: '11px', color: 'rgba(249, 250, 249, 0.7)', marginBottom: '6px', textTransform: 'uppercase', fontWeight: 500, letterSpacing: '0.5px' }}, 'PROJECT'),
+                            h('select', {
+                                onChange: (e) => {
                                     const p = mockProjects.find(proj => proj.id === parseInt(e.target.value));
                                     if (p) setSelectedProject(p);
-                                }}
-                                style={{
-                                    width: '100%',
-                                    backgroundColor: '#0A0C12',
-                                    border: '1px solid rgba(0, 106, 134, 0.4)',
-                                    borderRadius: '6px',
-                                    padding: '8px 12px',
-                                    fontSize: '13px',
-                                    color: '#F9FAF9'
-                                }}
-                            >
-                                <option value="">Select a project...</option>
-                                {mockProjects.map(p => 
-                                    <option key={p.id} value={p.id}>{p.name}</option>
-                                )}
-                            </select>
-                        </div>
+                                },
+                                style: { width: '100%', backgroundColor: '#0A0C12', border: '1px solid rgba(0, 106, 134, 0.4)', borderRadius: '6px', padding: '8px 12px', fontSize: '13px', color: '#F9FAF9' }
+                            },
+                                h('option', { value: '' }, 'Select a project...'),
+                                mockProjects.map(p => h('option', { key: p.id, value: p.id }, p.name))
+                            )
+                        ),
+                        
+                        selectedProject && h('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }},
+                            // Sources
+                            h('div', { style: { flex: '0 0 auto', maxHeight: '35%', display: 'flex', flexDirection: 'column', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }},
+                                h('div', { style: { padding: '12px 16px', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }},
+                                    h('h3', { style: { fontSize: '13px', fontWeight: 600, color: '#F9FAF9', margin: '0 0 8px 0' }}, 'Sources'),
+                                    h('div', { style: { position: 'relative' }},
+                                        h('div', { style: { position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#84A7E2' }}, h(SearchIcon)),
+                                        h('input', {
+                                            type: 'text',
+                                            placeholder: 'Search sources...',
+                                            value: sourceSearchQuery,
+                                            onChange: (e) => setSourceSearchQuery(e.target.value),
+                                            style: { width: '100%', backgroundColor: '#0A0C12', border: '1px solid rgba(0, 106, 134, 0.3)', borderRadius: '6px', paddingLeft: '32px', paddingRight: '10px', paddingTop: '7px', paddingBottom: '7px', fontSize: '12px', color: '#F9FAF9', outline: 'none' }
+                                        })
+                                    )
+                                ),
+                                h('div', { className: 'scrollable', style: { flex: 1, overflowY: 'auto', padding: '8px 16px' }},
+                                    filteredSources.map(s => h('div', { key: s.id, style: { marginBottom: '16px', paddingBottom: '16px', borderBottom: '1px solid rgba(0, 106, 134, 0.15)' }},
+                                        h('div', { style: { fontSize: '13px', color: '#F9FAF9', lineHeight: '1.4', marginBottom: '8px', fontWeight: 500 }}, s.title),
+                                        h('div', { style: { fontSize: '12px', color: '#84A7E2', marginBottom: '8px' }},
+                                            h('span', { style: { fontWeight: 600 }}, s.year),
+                                            ' · ',
+                                            s.authors
+                                        ),
+                                        h('button', {
+                                            onClick: () => insertSource(s),
+                                            style: { background: 'none', border: 'none', color: '#FDFF00', fontSize: '11px', cursor: 'pointer', padding: 0 }
+                                        }, '← Insert')
+                                    ))
+                                )
+                            ),
+                            
+                            // AskIGOR
+                            h('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', borderBottom: '1px solid rgba(0, 106, 134, 0.2)', overflow: 'hidden' }},
+                                h('div', { style: { padding: '12px 16px', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }},
+                                    h('h3', { style: { fontSize: '13px', fontWeight: 600, color: '#F9FAF9', margin: '0 0 8px 0' }}, 'AskIGOR Q&A'),
+                                    h('textarea', {
+                                        placeholder: 'Ask a question about your project...',
+                                        value: askIgorQuery,
+                                        onChange: (e) => setAskIgorQuery(e.target.value),
+                                        style: { width: '100%', backgroundColor: '#0A0C12', border: '1px solid rgba(0, 106, 134, 0.3)', borderRadius: '6px', padding: '8px 10px', fontSize: '12px', color: '#F9FAF9', outline: 'none', resize: 'none', fontFamily: 'inherit', minHeight: '60px' },
+                                        rows: 2
+                                    }),
+                                    h('button', {
+                                        onClick: handleAskIgor,
+                                        disabled: isLoadingIgor || !askIgorQuery.trim(),
+                                        style: { width: '100%', backgroundColor: '#FDFF00', color: '#0A0C12', padding: '8px', borderRadius: '6px', fontSize: '12px', fontWeight: 500, border: 'none', cursor: isLoadingIgor || !askIgorQuery.trim() ? 'not-allowed' : 'pointer', marginTop: '8px', opacity: isLoadingIgor || !askIgorQuery.trim() ? 0.5 : 1 }
+                                    }, isLoadingIgor ? 'Analyzing...' : 'Ask IGOR')
+                                ),
+                                askIgorResponse && h('div', { className: 'scrollable', style: { flex: 1, overflowY: 'auto', padding: '12px 16px' }},
+                                    h('div', { style: { fontSize: '12px', color: 'rgba(249, 250, 249, 0.9)', whiteSpace: 'pre-wrap', lineHeight: '1.6', marginBottom: '12px' }}, askIgorResponse),
+                                    h('button', {
+                                        onClick: () => insertToDocument(askIgorResponse),
+                                        style: { width: '100%', background: 'linear-gradient(to right, #006A86, #84A7E2)', color: '#F9FAF9', padding: '8px', borderRadius: '6px', fontSize: '12px', fontWeight: 500, border: 'none', cursor: 'pointer' }
+                                    }, 'Insert to Document')
+                                )
+                            ),
+                            
+                            // Find New Sources
+                            h('div', { style: { flex: '0 0 auto', padding: '12px 16px', borderTop: '2px solid rgba(253, 255, 0, 0.2)' }},
+                                h('h3', { style: { fontSize: '13px', fontWeight: 600, color: '#F9FAF9', margin: '0 0 8px 0', display: 'flex', alignItems: 'center', gap: '6px' }},
+                                    h(PlusIcon),
+                                    'Find New Sources'
+                                ),
+                                h('div', { style: { position: 'relative' }},
+                                    h('div', { style: { position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#84A7E2' }}, h(SearchIcon)),
+                                    h('input', {
+                                        type: 'text',
+                                        placeholder: 'Search for new sources...',
+                                        value: newSourceQuery,
+                                        onChange: (e) => setNewSourceQuery(e.target.value),
+                                        style: { width: '100%', backgroundColor: '#0A0C12', border: '1px solid rgba(0, 106, 134, 0.3)', borderRadius: '6px', paddingLeft: '32px', paddingRight: '10px', paddingTop: '7px', paddingBottom: '7px', fontSize: '12px', color: '#F9FAF9', outline: 'none' }
+                                    })
+                                ),
+                                h('button', {
+                                    onClick: handleFindNewSources,
+                                    disabled: isLoadingNewSources || !newSourceQuery.trim(),
+                                    style: { width: '100%', backgroundColor: '#006A86', color: '#FDFF00', padding: '8px', borderRadius: '6px', fontSize: '12px', fontWeight: 500, border: 'none', cursor: isLoadingNewSources || !newSourceQuery.trim() ? 'not-allowed' : 'pointer', marginTop: '8px', opacity: isLoadingNewSources || !newSourceQuery.trim() ? 0.5 : 1 }
+                                }, isLoadingNewSources ? 'Searching...' : 'Search'),
+                                newSources && h('div', { className: 'scrollable', style: { marginTop: '12px', maxHeight: '120px', overflowY: 'auto' }},
+                                    newSources.map(s => h('div', { key: s.id, style: { marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid rgba(0, 106, 134, 0.15)' }},
+                                        h('div', { style: { fontSize: '12px', color: '#F9FAF9', lineHeight: '1.4', marginBottom: '6px', fontWeight: 500 }}, s.title),
+                                        h('div', { style: { fontSize: '11px', color: '#84A7E2', marginBottom: '6px' }},
+                                            h('span', { style: { fontWeight: 600 }}, s.year),
+                                            ' · ',
+                                            s.authors
+                                        ),
+                                        h('button', {
+                                            onClick: () => insertSource(s),
+                                            style: { fontSize: '10px', color: '#FDFF00', background: 'none', border: 'none', padding: 0, cursor: 'pointer', textDecoration: 'underline' }
+                                        }, 'Add to project & insert')
+                                    ))
+                                )
+                            )
+                        )
+                    )
+                );
+            };
 
-                        {/* Show sources and Q&A only if project selected */}
-                        {selectedProject && (
-                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                                {/* Sources Section */}
-                                <div style={{ flex: '0 0 auto', maxHeight: '35%', display: 'flex', flexDirection: 'column', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }}>
-                                    <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }}>
-                                        <h3 style={{ fontSize: '13px', fontWeight: 600, color: '#F9FAF9', margin: '0 0 8px 0' }}>Sources</h3>
-                                        <div style={{ position: 'relative' }}>
-                                            <div style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#84A7E2' }}>
-                                                <SearchIcon />
-                                            </div>
-                                            <input
-                                                type="text"
-                                                placeholder="Search sources..."
-                                                value={sourceSearchQuery}
-                                                onChange={(e) => setSourceSearchQuery(e.target.value)}
-                                                style={{
-                                                    width: '100%',
-                                                    backgroundColor: '#0A0C12',
-                                                    border: '1px solid rgba(0, 106, 134, 0.3)',
-                                                    borderRadius: '6px',
-                                                    paddingLeft: '32px',
-                                                    paddingRight: '10px',
-                                                    paddingTop: '7px',
-                                                    paddingBottom: '7px',
-                                                    fontSize: '12px',
-                                                    color: '#F9FAF9',
-                                                    outline: 'none'
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="scrollable" style={{ flex: 1, overflowY: 'auto', padding: '8px 16px' }}>
-                                        {filteredSources.map((source) => (
-                                            <div key={source.id} style={{ 
-                                                marginBottom: '16px', 
-                                                paddingBottom: '16px', 
-                                                borderBottom: '1px solid rgba(0, 106, 134, 0.15)' 
-                                            }}>
-                                                <div style={{ fontSize: '13px', color: '#F9FAF9', lineHeight: '1.4', marginBottom: '8px', fontWeight: 500 }}>
-                                                    {source.title}
-                                                </div>
-                                                <div style={{ fontSize: '12px', color: '#84A7E2', marginBottom: '8px' }}>
-                                                    <span style={{ fontWeight: 600 }}>{source.year}</span> · {source.authors}
-                                                </div>
-                                                <button
-                                                    onClick={() => insertSource(source)}
-                                                    style={{
-                                                        background: 'none',
-                                                        border: 'none',
-                                                        color: '#FDFF00',
-                                                        fontSize: '11px',
-                                                        cursor: 'pointer',
-                                                        padding: 0
-                                                    }}
-                                                >
-                                                    ← Insert
-                                                </button>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* AskIGOR Q&A Section */}
-                                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', borderBottom: '1px solid rgba(0, 106, 134, 0.2)', overflow: 'hidden' }}>
-                                    <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(0, 106, 134, 0.2)' }}>
-                                        <h3 style={{ fontSize: '13px', fontWeight: 600, color: '#F9FAF9', margin: '0 0 8px 0' }}>AskIGOR Q&A</h3>
-                                        <textarea
-                                            placeholder="Ask a question about your project..."
-                                            value={askIgorQuery}
-                                            onChange={(e) => setAskIgorQuery(e.target.value)}
-                                            style={{
-                                                width: '100%',
-                                                backgroundColor: '#0A0C12',
-                                                border: '1px solid rgba(0, 106, 134, 0.3)',
-                                                borderRadius: '6px',
-                                                padding: '8px 10px',
-                                                fontSize: '12px',
-                                                color: '#F9FAF9',
-                                                outline: 'none',
-                                                resize: 'none',
-                                                fontFamily: 'inherit',
-                                                minHeight: '60px'
-                                            }}
-                                            rows={2}
-                                        />
-                                        <button
-                                            onClick={handleAskIgor}
-                                            disabled={isLoadingIgor || !askIgorQuery.trim()}
-                                            style={{
-                                                width: '100%',
-                                                backgroundColor: '#FDFF00',
-                                                color: '#0A0C12',
-                                                padding: '8px',
-                                                borderRadius: '6px',
-                                                fontSize: '12px',
-                                                fontWeight: 500,
-                                                border: 'none',
-                                                cursor: isLoadingIgor || !askIgorQuery.trim() ? 'not-allowed' : 'pointer',
-                                                marginTop: '8px',
-                                                opacity: isLoadingIgor || !askIgorQuery.trim() ? 0.5 : 1
-                                            }}
-                                        >
-                                            {isLoadingIgor ? 'Analyzing...' : 'Ask IGOR'}
-                                        </button>
-                                    </div>
-                                    
-                                    {askIgorResponse && (
-                                        <div className="scrollable" style={{ flex: 1, overflowY: 'auto', padding: '12px 16px' }}>
-                                            <div style={{
-                                                fontSize: '12px',
-                                                color: 'rgba(249, 250, 249, 0.9)',
-                                                whiteSpace: 'pre-wrap',
-                                                lineHeight: '1.6',
-                                                marginBottom: '12px'
-                                            }}>
-                                                {askIgorResponse}
-                                            </div>
-                                            <button
-                                                onClick={() => insertToDocument(askIgorResponse)}
-                                                style={{
-                                                    width: '100%',
-                                                    background: 'linear-gradient(to right, #006A86, #84A7E2)',
-                                                    color: '#F9FAF9',
-                                                    padding: '8px',
-                                                    borderRadius: '6px',
-                                                    fontSize: '12px',
-                                                    fontWeight: 500,
-                                                    border: 'none',
-                                                    cursor: 'pointer'
-                                                }}
-                                            >
-                                                Insert to Document
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Find New Sources Section */}
-                                <div style={{ flex: '0 0 auto', padding: '12px 16px', borderTop: '2px solid rgba(253, 255, 0, 0.2)' }}>
-                                    <h3 style={{
-                                        fontSize: '13px',
-                                        fontWeight: 600,
-                                        color: '#F9FAF9',
-                                        margin: '0 0 8px 0',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '6px'
-                                    }}>
-                                        <PlusIcon />
-                                        Find New Sources
-                                    </h3>
-                                    <div style={{ position: 'relative' }}>
-                                        <div style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#84A7E2' }}>
-                                            <SearchIcon />
-                                        </div>
-                                        <input
-                                            type="text"
-                                            placeholder="Search for new sources..."
-                                            value={newSourceQuery}
-                                            onChange={(e) => setNewSourceQuery(e.target.value)}
-                                            style={{
-                                                width: '100%',
-                                                backgroundColor: '#0A0C12',
-                                                border: '1px solid rgba(0, 106, 134, 0.3)',
-                                                borderRadius: '6px',
-                                                paddingLeft: '32px',
-                                                paddingRight: '10px',
-                                                paddingTop: '7px',
-                                                paddingBottom: '7px',
-                                                fontSize: '12px',
-                                                color: '#F9FAF9',
-                                                outline: 'none'
-                                            }}
-                                        />
-                                    </div>
-                                    <button
-                                        onClick={handleFindNewSources}
-                                        disabled={isLoadingNewSources || !newSourceQuery.trim()}
-                                        style={{
-                                            width: '100%',
-                                            backgroundColor: '#006A86',
-                                            color: '#FDFF00',
-                                            padding: '8px',
-                                            borderRadius: '6px',
-                                            fontSize: '12px',
-                                            fontWeight: 500,
-                                            border: 'none',
-                                            cursor: isLoadingNewSources || !newSourceQuery.trim() ? 'not-allowed' : 'pointer',
-                                            marginTop: '8px',
-                                            opacity: isLoadingNewSources || !newSourceQuery.trim() ? 0.5 : 1
-                                        }}
-                                    >
-                                        {isLoadingNewSources ? 'Searching...' : 'Search'}
-                                    </button>
-                                    
-                                    {newSources && (
-                                        <div className="scrollable" style={{ marginTop: '12px', maxHeight: '120px', overflowY: 'auto' }}>
-                                            {newSources.map((source) => (
-                                                <div key={source.id} style={{
-                                                    marginBottom: '12px',
-                                                    paddingBottom: '12px',
-                                                    borderBottom: '1px solid rgba(0, 106, 134, 0.15)'
-                                                }}>
-                                                    <div style={{ fontSize: '12px', color: '#F9FAF9', lineHeight: '1.4', marginBottom: '6px', fontWeight: 500 }}>
-                                                        {source.title}
-                                                    </div>
-                                                    <div style={{ fontSize: '11px', color: '#84A7E2', marginBottom: '6px' }}>
-                                                        <span style={{ fontWeight: 600 }}>{source.year}</span> · {source.authors}
-                                                    </div>
-                                                    <button
-                                                        onClick={() => insertSource(source)}
-                                                        style={{
-                                                            fontSize: '10px',
-                                                            color: '#FDFF00',
-                                                            background: 'none',
-                                                            border: 'none',
-                                                            padding: 0,
-                                                            cursor: 'pointer',
-                                                            textDecoration: 'underline'
-                                                        }}
-                                                    >
-                                                        Add to project & insert
-                                                    </button>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            );
-        };
-
-        // Wait for Office to be ready
-        if (typeof Office !== 'undefined') {
-            Office.onReady(() => {
-                ReactDOM.render(<FindestAddin />, document.getElementById('root'));
-            });
-        } else {
-            // Fallback if Office.js isn't loaded
-            window.addEventListener('DOMContentLoaded', () => {
-                ReactDOM.render(<FindestAddin />, document.getElementById('root'));
-            });
-        }
+            // Initialize
+            if (typeof Office !== 'undefined') {
+                Office.onReady(() => {
+                    ReactDOM.render(React.createElement(FindestAddin), document.getElementById('root'));
+                });
+            } else {
+                window.addEventListener('DOMContentLoaded', () => {
+                    ReactDOM.render(React.createElement(FindestAddin), document.getElementById('root'));
+                });
+            }
+        })();
     </script>
 </body>
 </html>
